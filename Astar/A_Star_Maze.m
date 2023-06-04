@@ -1,20 +1,21 @@
 %% load map
-clear;
-ImpRgb = imread('sysu6001200.png');  % 修改地图文件名
+% clear;
+ImpRgb = imread('sysu6001200.png');
 Imp    = rgb2gray(ImpRgb);
-Imp    = ~im2bw(Imp)*255;
+Imp    = ~imbinarize(Imp)*255;
+% Imp = map;
 MAX_X=size(Imp,1);
 MAX_Y=size(Imp,2);
 distanceFcn = @(p1,p2) norm(p1-p2);
+
 %% AStar
 GlbTab      = zeros(MAX_X, MAX_Y);  % 0|new 1|open 2|close
 PathTab     = zeros(MAX_X, MAX_Y, 2);
 nodeStartXY  = [40, 40];
-nodeTargetXY = [56, 1152];  % 修改目标坐标为新地图尺寸
+nodeTargetXY = [56, 1152];  
 startGn     = 0;
 startHn     = distanceFcn(nodeTargetXY,nodeStartXY);
 startFn     = startGn + startHn;
-% [fn | gn | hn | x | y]
 nodeStart  = [startFn, startGn, startHn, nodeStartXY]; 
 
 %% loop
