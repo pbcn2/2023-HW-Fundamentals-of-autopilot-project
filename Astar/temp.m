@@ -73,6 +73,8 @@ if foundpath == 1
     node_x = nodeTargetXY;
     Imp_R = repmat(map*255, [1 1 3]);
     lineWidth = 1; % Set the width of the line
+    path = zeros(4, 0);  % Initialize path array
+    
     while ~isequal(node_x, nodeStartXY)
         for dx = -lineWidth:lineWidth
             for dy = -lineWidth:lineWidth
@@ -86,9 +88,17 @@ if foundpath == 1
                 end
             end
         end
-        node_x = PathTab(node_x(1),node_x(2),:);
-        node_x = node_x(:)';
+        psi = compute_psi(PathTab, node_x);  % You need to implement this function
+        curvature = compute_curvature(PathTab, node_x);  % You need to implement this function
+        path = [path, [node_x(1); node_x(2); psi; curvature]];  % Store path information
+        
+        node_x = squeeze(PathTab(node_x(1), node_x(2), :))';
     end
+    
+    % Save path to file
+    tarj_diySYSU = path;
+    save('tarj_diySYSU.mat', 'tarj_diySYSU');
+    
     figure(1);
     imshow(Imp_R)
 else

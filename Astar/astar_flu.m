@@ -71,13 +71,37 @@ end
 %% get path
 if foundpath == 1
     node_x = nodeTargetXY;
+    pathPoints = [];
+
+    while ~isequal(node_x, nodeStartXY)
+        pathPoints = [pathPoints; node_x];
+        node_x = PathTab(node_x(1),node_x(2),:);
+        node_x = node_x(:)';
+    end
+    
+    pathPoints = flip(pathPoints, 1);
+    
+    % Insert extra points into the path
+    insertNum = 3; % The number of points to be inserted between two adjacent points
+    newPathPoints = pathPoints(1,:);
+    for i = 1:size(pathPoints,1)-1
+        xPoints = round(linspace(pathPoints(i,1), pathPoints(i+1,1), insertNum + 2));
+        yPoints = round(linspace(pathPoints(i,2), pathPoints(i+1,2), insertNum + 2));
+        insertPoints = [xPoints(2:end-1)', yPoints(2:end-1)'];
+        newPathPoints = [newPathPoints; insertPoints];
+    end
+    newPathPoints = [newPathPoints; pathPoints(end,:)];
+
+    % B-spline curve smoothing
+    smoothPath = spcrv([[newPathPoints(1,1); newPathPoints(:,1); newPathPoints(end,1)],[newPathPoints(1,2); newPathPoints(:,2); newPathPoints(end,2)]],3);
+    
     Imp_R = repmat(map*255, [1 1 3]);
     lineWidth = 1; % Set the width of the line
-    while ~isequal(node_x, nodeStartXY)
+    for i = 1:size(smoothPath,2)
         for dx = -lineWidth:lineWidth
             for dy = -lineWidth:lineWidth
-                x = node_x(1)+dx;
-                y = node_x(2)+dy;
+                x = round(smoothPath(1,i))+dx;
+                y = round(smoothPath(2,i))+dy;
                 % Check if the point is inside the image boundaries
                 if (x >= 1) && (x <= size(map,1)) && (y >= 1) && (y <= size(map,2))
                     Imp_R(x,y,1) = 0;
@@ -86,8 +110,6 @@ if foundpath == 1
                 end
             end
         end
-        node_x = PathTab(node_x(1),node_x(2),:);
-        node_x = node_x(:)';
     end
     figure(1);
     imshow(Imp_R)
