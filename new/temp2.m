@@ -1,7 +1,8 @@
-clc; clear;
+clc;
+clear;
 
 %% Load the .mat file
-load('sysu_standard.mat'); 
+load('sysu_standard.mat', 'map'); 
 MAX_X=size(map,1);
 MAX_Y=size(map,2);
 
@@ -124,26 +125,28 @@ if foundpath == 1
         node_x = squeeze(PathTab(node_x(1), node_x(2), :))';
     end
     
-        % Scale coordinates
-    path(1:2, :) = path(1:2, :) * 0.01;  % Scale coordinates
-    
-    % Swap x and y coordinates
-    temp1 = path(1, :);
-    path(1, :) = path(2, :);
-    path(2, :) = temp1;
-    
-    % Adjust psi and curvature after swapping x and y coordinates
-    % Convert psi from y-axis origin to x-axis origin by subtracting pi/2
-    path(3, :) = path(3, :) - pi/2;
-    path(3, :) = atan2(sin(path(3, :)), cos(path(3, :)));  % Normalize psi to [-pi, pi]
-%     % Assuming curvature is positive when turning left, we negate it after swapping x and y
-%     path(4, :) = -path(4, :);
+     % Path smoothing using polynomial interpolation
+    t = 1:size(path, 2);
+    t2 = 1:0.5:size(path, 2);  % Increase the number of points for smoother curve
 
+   % Perform spline interpolation for each dimension of the path
+path_smoothed = zeros(4, length(t2));  % Initialize path_smoothed with the correct size
+for dim = 1:size(path, 1)
+    splineCoeffs = spapi(5, t, path(dim, :), 'pchip', 'tol', 0.5);
+    path_smoothed(dim, :) = fnval(splineCoeffs, t2);
+end
+
+
+
+
+    % Scale coordinates
+    path_smoothed(1:2, :) = path_smoothed(1:2, :) * 0.01;  % Scale coordinates
+    path_smoothed = path_smoothed([2 1 3 4], :);
 
     % Save path to file
-    trajSYSU = path;
+    trajSYSU = path_smoothed;
     save('traj_diySYSU.mat', 'trajSYSU');
-    
+
     figure(1);
     imshow(colorMap)
 else
