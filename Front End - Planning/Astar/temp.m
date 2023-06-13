@@ -94,6 +94,18 @@ if foundpath == 1
         
         node_x = squeeze(PathTab(node_x(1), node_x(2), :))';
     end
+
+     % Smooth the path with moving average window
+    N = 50;  % Set the size of the window
+    smooth_path = zeros(size(path));
+    for i = 1:size(path,2)
+        if i < N
+            smooth_path(:,i) = mean(path(:,1:i), 2);
+        else
+            smooth_path(:,i) = mean(path(:,i-N+1:i), 2);
+        end
+    end
+    path = smooth_path;
     
     % Save path to file
     tarj_diySYSU = path;

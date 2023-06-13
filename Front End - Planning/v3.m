@@ -1,10 +1,14 @@
-clc;
-clear;
+clc; clear;
+
+% ===================================
+% verson 2.0
+% 这个版本的代码实现了更加稀疏的点，便于插值
+% ===================================
 
 %% Load the .mat file
-load('sysu_standard.mat', 'map'); 
-MAX_X=size(map,1);
-MAX_Y=size(map,2);
+load('sysu_standard.mat'); 
+MAX_X = size(map, 1);
+MAX_Y = size(map, 2);
 
 %% Create a color map
 colorMap = zeros(MAX_X, MAX_Y, 3);  % Initialize to black
@@ -34,7 +38,6 @@ colorMap(:,:,3) = colorMap(:,:,3) + inflatedObstacleColor(3) * (inflatedMap & ~m
 % Now invert the map again for the path planning
 map = ~inflatedMap;
 
-
 distanceFcn = @(p1,p2) norm(p1-p2);
 
 %% AStar
@@ -48,6 +51,9 @@ startFn     = startGn + startHn;
 nodeStart  = [startFn, startGn, startHn, nodeStartXY]; 
 
 %% Loop
+step_big = 10;  % Big step size
+step_small = 1;  % Small step size
+
 openset = [nodeStart];
 foundpath = 0;
 while(~isempty(openset))
@@ -63,14 +69,21 @@ while(~isempty(openset))
     node_gn = node(2);
     GlbTab(node_x, node_y) = 2;
     
-    for k= 1:-1:-1
-        for j= 1:-1:-1
+    for k= -step_big:step_big:step_big
+        for j= -step_big:step_big:step_big
             if (k~=j || k~=0)  %The node itself is not its successor
                 s_x  = node_x+k;
                 s_y  = node_y+j;
                 if((s_x >0 && s_x <=MAX_X) && (s_y >0 && s_y <=MAX_Y))%node within array bound
                     % exist close node
                     if GlbTab(s_x, s_y) == 2 || map(s_x,s_y) == 0 
+                        % Go back to fine search if it's an obstacle
+                        for m= -step_small:step_small:step_small
+                            for n= -step_small:step_small:step_small
+                                s_x  = node_x+m;
+                                s_y  = node_y+n;
+                            end
+                        end
                         continue;
                     end
                     s_gn = node_gn + distanceFcn([node_x,node_y], [s_x,s_y]);
@@ -125,20 +138,46 @@ if foundpath == 1
         node_x = squeeze(PathTab(node_x(1), node_x(2), :))';
     end
     
-    
-
-
-
     % Scale coordinates
-    path_smoothed(1:2, :) = path_smoothed(1:2, :) * 0.01;  % Scale coordinates
-    path_smoothed = path_smoothed([2 1 3 4], :);
+    path(1:2, :) = path(1:2, :) * 0.01;  % Scale coordinates
+    
+    % Swap x and y coordinates
+    temp1 = path(1, :);
+    path(1, :) = path(2, :);
+    path(2, :) = temp1;
+    
+    % Adjust psi and curvature after swapping x and y coordinates
+    % Convert psi from y-axis origin to x-axis origin by subtracting pi/2
+    path(3, :) = path(3, :) - pi/2;
+    path(3, :) = atan2(sin(path(3, :)), cos(path(3, :)));  % Normalize psi to [-pi, pi]
+    
+% Perform cubic polynomial interpolation
+[uniqueX, uniqueIdx] = unique(path(1, :)); % Find unique x coordinates and their corresponding indices
+xi = linspace(min(uniqueX), max(uniqueX), 100); % Generate interpolation points
+yi = interp1(path(1, uniqueIdx), path(2, uniqueIdx), xi, 'spline'); % Perform cubic spline interpolation
 
-    % Save path to file
-    trajSYSU = path_smoothed;
-    save('traj_diySYSU.mat', 'trajSYSU');
+% Perform cubic polynomial interpolation
+[uniqueX, uniqueIdx] = unique(path(1, :)); % Find unique x coordinates and their corresponding indices
+xi = linspace(min(uniqueX), max(uniqueX), 100); % Generate interpolation points
+yi = interp1(path(1, uniqueIdx), path(2, uniqueIdx), xi, 'spline'); % Perform cubic spline interpolation
 
-    figure(1);
-    imshow(colorMap)
+% Perform coordinate transformations
+xi = MAX_X - xi + 1; % Convert x-coordinate from left-top origin to left-bottom origin
+xi = xi * 0.01; % Scale x-coordinate
+yi = yi * 0.01; % Scale y-coordinate
+
+% Store interpolated path
+trajSYSU = [xi; yi; zeros(1, length(xi)); zeros(1, length(xi))];
+save('traj_diySYSU.mat', 'trajSYSU');
+
+% Plot the interpolated path
+figure(1);
+imshow(colorMap);
+hold on;
+plot(trajSYSU(2, :), trajSYSU(1, :), 'b-', 'LineWidth', 2);
+hold off;
+
+    
 else
     disp('Not find solution')
 end

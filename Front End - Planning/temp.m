@@ -1,8 +1,7 @@
-clc;
-clear;
+clc; clear;
 
 %% Load the .mat file
-load('sysu_standard.mat', 'map'); 
+load('sysu_standard.mat'); 
 MAX_X=size(map,1);
 MAX_Y=size(map,2);
 
@@ -22,7 +21,7 @@ colorMap(:,:,2) = map * obstacleColor(2) + ~map * freeSpaceColor(2);
 colorMap(:,:,3) = map * obstacleColor(3) + ~map * freeSpaceColor(3);
 
 %% Obstacle Inflation
-r = 9;  % Set the inflation radius
+r = 15;  % Set the inflation radius
 se = strel('square', 2*r+1);  % Create a square structural element
 inflatedMap = imdilate(map, se);  % Dilate the obstacles
 
@@ -125,18 +124,34 @@ if foundpath == 1
         node_x = squeeze(PathTab(node_x(1), node_x(2), :))';
     end
     
+    path(1:2, :) = path(1:2, :) * 0.01;  % Scale coordinates
+
+    % Smooth the path with moving average window
+    N = 50;  % Set the size of the window
+    smooth_path = zeros(size(path));
+    for i = 1:size(path,2)
+        if i < N
+            smooth_path(:,i) = mean(path(:,1:i), 2);
+        else
+            smooth_path(:,i) = mean(path(:,i-N+1:i), 2);
+        end
+    end
+    path = smooth_path;
     
-
-
-
-    % Scale coordinates
-    path_smoothed(1:2, :) = path_smoothed(1:2, :) * 0.01;  % Scale coordinates
-    path_smoothed = path_smoothed([2 1 3 4], :);
+    % Swap x and y coordinates
+    temp1 = path(1, :);
+    path(1, :) = path(2, :);
+    path(2, :) = temp1;
+    
+    % Adjust psi and curvature after swapping x and y coordinates
+    % Convert psi from y-axis origin to x-axis origin by subtracting pi/2
+    path(3, :) = path(3, :) - pi/2;
+    path(3, :) = atan2(sin(path(3, :)), cos(path(3, :)));  % Normalize psi to [-pi, pi]
 
     % Save path to file
-    trajSYSU = path_smoothed;
+    trajSYSU = path;
     save('traj_diySYSU.mat', 'trajSYSU');
-
+    
     figure(1);
     imshow(colorMap)
 else
