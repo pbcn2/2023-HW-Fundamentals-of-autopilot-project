@@ -10,7 +10,6 @@ def moving_average(x, w):
     # 滑动窗口平滑
     return np.convolve(x, np.ones(w), 'valid') / w
 
-
 def calculate_curvature(x1, y1, x2, y2, x3, y3):
     dx1 = x2 - x1
     dy1 = y2 - y1
@@ -20,9 +19,7 @@ def calculate_curvature(x1, y1, x2, y2, x3, y3):
     if dx1 * dy2 - dy1 * dx2 == 0:
         return 0
     else:
-        return ((dx1 * dy2) - (dy1 * dx2)) / ((dx1**2 + dy1**2) * math.sqrt((dx2**2 + dy2**2)))
-
-
+        return abs(((dx1 * dy2) - (dy1 * dx2)) / ((dx1**2 + dy1**2) * math.sqrt((dx2**2 + dy2**2))))
 
 # ============================================================================
 
@@ -79,13 +76,11 @@ for i in range(smooth_path.shape[0] - 1):  # 减去1以避免超出索引范围
     smooth_path_with_heading[i] = [x, y, heading, curvature]
 
 # 在smooth_path_with_heading中添加曲率
-# 在smooth_path_with_heading中添加曲率
 for i in range(1, len(smooth_path)-1):  # 跳过第一个和最后一个点，因为它们没有足够的邻居来计算曲率
     curvature = calculate_curvature(smooth_path[i-1, 0], smooth_path[i-1, 1],
                                     smooth_path[i, 0], smooth_path[i, 1],
                                     smooth_path[i+1, 0], smooth_path[i+1, 1])
     smooth_path_with_heading[i, 3] = curvature
-
 
 # ======================================================================================
 # 显示结果

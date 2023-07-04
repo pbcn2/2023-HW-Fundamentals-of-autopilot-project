@@ -36,8 +36,8 @@ figure;
 imagesc(map);%imagesc 可以将矩阵或数组的值映射到颜色图像中
 colormap(flipud(gray));%colormap 将数据值映射到颜色空间中 colormap(flipud(gray)) 来设置颜色映射表为灰度图像。
 hold on;
-save('traj\sysu_standard.mat','map','out');
-load('traj\sysu_standard.mat');
+save('sysu_standard.mat','map','out');
+load('sysu_standard.mat');
 axis equal;
 axis off;
 % figure;

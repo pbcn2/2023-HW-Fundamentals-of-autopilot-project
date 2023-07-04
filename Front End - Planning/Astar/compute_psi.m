@@ -1,10 +1,15 @@
 function psi = compute_psi(PathTab, node)
-    prev_node = squeeze(PathTab(node(1), node(2), :))';
-    if any(prev_node == 0)
+    % If the current node is the start node, return 0
+    % Update the coordinates of the start node if necessary
+    if isequal(node, [520, 80])
         psi = 0;
-    else
-        dx = node(1) - prev_node(1);
-        dy = node(2) - prev_node(2);
-        psi = atan2(dy, dx);
+        return;
     end
+
+    % Otherwise, calculate the psi
+    parent_node = squeeze(PathTab(node(1), node(2), :))'; 
+    psi = atan2(node(2) - parent_node(2), node(1) - parent_node(1));
+    
+    % If you need to convert psi to degrees, uncomment the following line:
+    % psi = rad2deg(psi);
 end
