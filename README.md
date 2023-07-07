@@ -233,6 +233,8 @@ end
 
 <font color=red>动态展示位于`.\result`文件夹中</font>
 
+<font color=red>运行时间在gif中都可以看得到</font>
+
 
 
 ## REFERENCE
