@@ -1,5 +1,5 @@
 clear all; close all;
-x_I=40; y_I=40;          
+x_I=80; y_I=520;          
 x_G=56; y_G=1152;       
 Thr=50;                
 Delta= 30;            

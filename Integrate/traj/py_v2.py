@@ -31,7 +31,9 @@ mat = loadmat('sysu_standard.mat')
 
 # 获取map和out变量
 mapData = mat['map']
-out = mat['out']
+# mapData = np.array(mapData == 111, dtype=bool)
+# mapData = np.asmatrix(mapData)
+# out = mat['out']
 
 # 对障碍物进行膨胀
 mapData_bak = mapData  # 备份未膨胀的地图
