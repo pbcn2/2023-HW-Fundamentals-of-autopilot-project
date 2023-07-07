@@ -181,19 +181,41 @@ end
 
 ### 运行结果：
 
+#### 随机地图1
+
+![r_1](https://pic.imgdb.cn/item/64a86c631ddac507cca4b9de.jpg)
+
 #### 随机地图2
 
 ![r2](https://pic.imgdb.cn/item/64a861271ddac507cc9b7fcc.jpg)
+
+![r2gif](https://github.com/pbcn2/Img_bed_for_pbcn2/blob/main/2023-HW-Fundamentals-of-autopilot-project/result/random_2/r2_trajectory.gif)
 
 #### 随机地图3
 
 ![r3](https://pic.imgdb.cn/item/64a8616d1ddac507cc9bc12e.jpg)
 
+![r3gif](https://github.com/pbcn2/Img_bed_for_pbcn2/blob/main/2023-HW-Fundamentals-of-autopilot-project/result/random_3/r3_trajectory.gif)
+
 #### 随机地图4
 
 ![r4](https://pic.imgdb.cn/item/64a862851ddac507cc9cc411.jpg)
 
+![r4gif](https://github.com/pbcn2/Img_bed_for_pbcn2/blob/main/2023-HW-Fundamentals-of-autopilot-project/result/random_4/trajectory.gif)
+
 #### 随机地图5
+
+![r5](https://pic.imgdb.cn/item/64a866fc1ddac507cca0cc64.jpg)
+
+![r5gif](https://github.com/pbcn2/Img_bed_for_pbcn2/blob/main/2023-HW-Fundamentals-of-autopilot-project/result/random_5/r5_trajectory.gif)
+
+#### 随机地图6
+
+![r6](https://pic.imgdb.cn/item/64a869b31ddac507cca2b776.jpg)
+
+![r6gif](https://github.com/pbcn2/Img_bed_for_pbcn2/blob/main/2023-HW-Fundamentals-of-autopilot-project/result/random_6/trajectory.gif)
+
+
 
 
 
