@@ -1,11 +1,9 @@
 # 2023-HW-Fundamentals-of-autopilot-project
 ## 算法库简述
 
-本项目处于debug状态( 2023.7.2 )
-
 目前本项目使用到的算法是由两个部分整合而成
 
-将所有算法的单独实现收集在了两个文件夹中
+将所有算法的单独实现并收集在了两个文件夹中
 
 - 前端-规划（`Front End - Planning`）
 - 后端-控制（`Back End - Control`）
