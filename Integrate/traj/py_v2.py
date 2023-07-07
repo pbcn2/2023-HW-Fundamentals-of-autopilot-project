@@ -37,7 +37,7 @@ mapData = mat['map']
 
 # 对障碍物进行膨胀
 mapData_bak = mapData  # 备份未膨胀的地图
-mapData = binary_dilation(mapData, structure=np.ones((35, 35)))
+mapData = binary_dilation(mapData, structure=np.ones((32, 32)))
 
 # 垂直翻转地图
 mapData_bak = np.flipud(mapData_bak)

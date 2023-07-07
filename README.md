@@ -12,7 +12,7 @@
 
 ### <font color=red>前端</font>
 
-前端算法库位于`Front End - Planning`文件夹，多种函数实现了主体的路径规划功能
+前端算法库位于`.\Algorithm library\Front End - Planning`文件夹，多种函数实现了主体的路径规划功能
 
 #### Astar算法
 
@@ -181,9 +181,23 @@ end
 
 ### 运行结果：
 
+#### 给定地图
+
+红色线表示助教规划的轨迹
+
+黑色细线是本人规划的轨迹
+
+蓝色线是小车的实际轨迹
+
+![set](https://pic.imgdb.cn/item/64a8753a1ddac507ccaba53d.jpg)
+
+![setgif](https://github.com/pbcn2/Img_bed_for_pbcn2/blob/main/2023-HW-Fundamentals-of-autopilot-project/result/set/trajectory.gif)
+
 #### 随机地图1
 
 ![r_1](https://pic.imgdb.cn/item/64a86c631ddac507cca4b9de.jpg)
+
+![r1gif](https://github.com/pbcn2/Img_bed_for_pbcn2/blob/main/2023-HW-Fundamentals-of-autopilot-project/result/random_1/trajectory.gif)
 
 #### 随机地图2
 
@@ -216,6 +230,8 @@ end
 ![r6gif](https://github.com/pbcn2/Img_bed_for_pbcn2/blob/main/2023-HW-Fundamentals-of-autopilot-project/result/random_6/trajectory.gif)
 
 
+
+<font color=red>动态展示位于`.\result`文件夹中</font>
 
 
 
