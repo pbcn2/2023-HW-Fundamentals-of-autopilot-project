@@ -1,4 +1,9 @@
 # 2023-HW-Fundamentals-of-autopilot-project
+
+<font color=purple>本项目已经全部托管在了GitHub上，诚邀您浏览并给予宝贵的意见</font>
+
+https://github.com/pbcn2/2023-HW-Fundamentals-of-autopilot-project
+
 ## 算法库简述
 
 目前本项目使用到的算法是由两个部分整合而成
@@ -179,6 +184,8 @@ end
 
 ### 运行结果：
 
+<font color=red>特别声明：所有路线经过本人观测均无碰撞发生</font>
+
 #### 给定地图
 
 红色线表示助教规划的轨迹
@@ -231,7 +238,12 @@ end
 
 !!! Attention：
 
-<font color=red>动态展示位于`.\result`文件夹中</font>
+<font color=red>总计7次的实验结果均保存在了`.\result`文件夹中，每个结果文件夹均包含了以下数据：</font>
+
+- 运行时的地图数据——`sysu_standard.mat`
+- 对应地图规划生成的轨迹数据——`traj_diySYSU.mat`
+- 运行窗口截图——`r_x.jpg`
+- 运行效果的动态图——`rx_trajectory.gif`
 
 <font color=red>运行时间在gif中都可以看得到</font>
 
@@ -250,4 +262,3 @@ end
 [详细介绍用MATLAB实现基于A*算法的路径规划](https://blog.csdn.net/qq_44339029/article/details/108682933)
 
 [全局路径规划A star的Matlab实现](https://blog.csdn.net/gophae/article/details/103060966)
-
